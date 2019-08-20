@@ -3,6 +3,7 @@ require("dotenv").config();
 // var request = require("request");
 var Spotify = require("node-spotify-api");
 var axios = require("axios");
+const fs = require("fs");
 
 var keys = require("./keys.js");
 var spotify = new Spotify(keys.spotify);
@@ -16,8 +17,6 @@ function Movie_Info(movie) {
   axios
     .get(queryUrl)
     .then(function(response) {
-      console.log("aaaaaaaaaaaa   " + JSON.stringify(response.data.Ratings));
-
       console.log("Title: " + response.data.Title);
       console.log("Release Year: " + response.data.Year);
       console.log("IMDB Rating: " + response.data.imdbRating);
