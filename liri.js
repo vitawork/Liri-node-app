@@ -80,19 +80,22 @@ function Artist_Info(artist) {
         if (response.data.length === 0) {
           console.log("No upcoming events.");
         } else {
+          console.log("_____________________________________________");
+
           for (var obj in response.data) {
-            console.log("Venue:");
-            console.log("");
-            console.log(response.data[obj].venue.name);
-            var location = response.data[obj].venue.city;
+            console.log(" ");
+            console.log("Venue:  " + response.data[obj].venue.name);
+            var location = "        " + response.data[obj].venue.city;
             if (response.data[obj].venue.region !== "") {
               location += ", " + response.data[obj].venue.region;
             }
             console.log(location + ", " + response.data[obj].venue.country);
             console.log(
-              moment(response.data[obj].datetime, "YYYY-MM-DDTh:mm:ss").format(
-                "L"
-              )
+              "        " +
+                moment(
+                  response.data[obj].datetime,
+                  "YYYY-MM-DDTh:mm:ss"
+                ).format("L")
             );
 
             console.log("_____________________________________________");
@@ -109,6 +112,49 @@ function Artist_Info(artist) {
         console.log("Error", error.message);
       }
     });
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+function Song_Info(song) {
+  spotify.search({ type: "track", query: song, limit: 5 }, function(err, data) {
+    if (err) {
+      return console.log("Error occurred");
+    } else {
+      if (data.tracks.items.length === 0) {
+        console.log("Song not found!");
+      } else {
+        for (let j = 0; j < data.tracks.items.length; j++) {
+          if (
+            (song === "The Sign" &&
+              data.tracks.items[j].artists[0].name === "Ace of Base") ||
+            song !== "The Sign"
+          ) {
+            console.log(
+              "________________________________________________________________________________"
+            );
+            console.log("");
+            if (data.tracks.items[j].artists.length === 1) {
+              console.log("Artist:  " + data.tracks.items[j].artists[0].name);
+            } else {
+              console.log("Artists:");
+              for (let i = 0; i < data.tracks.items[j].artists.length; i++) {
+                console.log("   - " + data.tracks.items[j].artists[i].name);
+              }
+            }
+
+            console.log("Song:  " + data.tracks.items[j].name);
+            console.log(
+              "Spotify Link:  " + data.tracks.items[j].external_urls.spotify
+            );
+            console.log("Album Name:  " + data.tracks.items[j].album.name);
+          }
+        }
+        console.log(
+          "________________________________________________________________________________"
+        );
+      }
+    }
+  });
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -143,8 +189,15 @@ switch (command) {
 
     break;
   case "spotify-this-song":
-    var song = process.argv[3];
-    ///////////////////
+    var song = "";
+
+    if (process.argv[3] === undefined) {
+      song = "The Sign";
+    } else {
+      song = Name();
+    }
+
+    Song_Info(song);
 
     break;
   case "movie-this":
