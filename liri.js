@@ -21,6 +21,10 @@ function Movie_Info(movie) {
       if (response.data["Response"] === "False") {
         console.log("Movie not found!");
       } else {
+        console.log(
+          "________________________________________________________________________________"
+        );
+        console.log(" ");
         console.log("Title: " + response.data.Title);
         console.log("Release Year: " + response.data.Year);
         console.log("IMDB Rating: " + response.data.imdbRating);
@@ -40,6 +44,9 @@ function Movie_Info(movie) {
         console.log("Language: " + response.data.Language);
         console.log("Plot: " + response.data.Plot);
         console.log("Actors: " + response.data.Actors);
+        console.log(
+          "________________________________________________________________________________"
+        );
       }
     })
     .catch(function(error) {
@@ -213,7 +220,35 @@ switch (command) {
 
     break;
   case "do-what-it-says":
-    //////////////////////
+    fs.readFile("random.txt", "utf8", function(error, data) {
+      if (error) {
+        return console.log(error);
+      }
+
+      var FArr = data.split("\n");
+      for (let i = 0; i < FArr.length; i++) {
+        var dataArr = FArr[i].split(",");
+
+        var com = dataArr[0];
+        var n = dataArr[1].split('"');
+        var name = n[1];
+
+        switch (com) {
+          case "concert-this": {
+            Artist_Info(name);
+            break;
+          }
+          case "spotify-this-song": {
+            Song_Info(name);
+            break;
+          }
+          case "movie-this": {
+            Movie_Info(name);
+            break;
+          }
+        }
+      }
+    });
 
     break;
 
