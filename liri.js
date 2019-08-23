@@ -21,31 +21,39 @@ function Movie_Info(movie) {
       if (response.data["Response"] === "False") {
         console.log("Movie not found!");
       } else {
-        console.log(
-          "________________________________________________________________________________"
-        );
-        console.log(" ");
-        console.log("Title: " + response.data.Title);
-        console.log("Release Year: " + response.data.Year);
-        console.log("IMDB Rating: " + response.data.imdbRating);
+        var c = `________________________________________________________________________________
+      
+Title: ${response.data.Title}
+Release Year: ${response.data.Year}
+IMDB Rating: ${response.data.imdbRating}`;
 
-        // Some movies do not have rotten tomatoes
         var found = false;
         for (let i = 0; i < response.data.Ratings.length; i++) {
           if (response.data.Ratings[i].Source === "Rotten Tomatoes") {
-            console.log("Rotten Tomatoes: " + response.data.Ratings[i].Value);
+            c += `\nRotten Tomatoes: ${response.data.Ratings[i].Value}`;
             found = true;
           }
         }
         if (!found) {
-          console.log("Rotten Tomatoes: N/A");
+          c += `\nRotten Tomatoes: N/A`;
         }
-        console.log("Country: " + response.data.Country);
-        console.log("Language: " + response.data.Language);
-        console.log("Plot: " + response.data.Plot);
-        console.log("Actors: " + response.data.Actors);
-        console.log(
-          "________________________________________________________________________________"
+
+        c += `\nCountry: ${response.data.Country}
+Language: ${response.data.Language}
+Plot: ${response.data.Plot}
+Actors: ${response.data.Actors}
+________________________________________________________________________________\n`;
+
+        console.log(c);
+
+        fs.appendFile(
+          "log.txt",
+          `${command}  "${movie.split("+").join(" ")}"\n${c}`,
+          function(err) {
+            if (err) {
+              return console.log(err);
+            }
+          }
         );
       }
     })
@@ -87,26 +95,29 @@ function Artist_Info(artist) {
         if (response.data.length === 0) {
           console.log("No upcoming events.");
         } else {
-          console.log("_____________________________________________");
+          var c = `_____________________________________________\n`;
 
           for (var obj in response.data) {
-            console.log(" ");
-            console.log("Venue:  " + response.data[obj].venue.name);
-            var location = "        " + response.data[obj].venue.city;
-            if (response.data[obj].venue.region !== "") {
-              location += ", " + response.data[obj].venue.region;
-            }
-            console.log(location + ", " + response.data[obj].venue.country);
-            console.log(
-              "        " +
-                moment(
-                  response.data[obj].datetime,
-                  "YYYY-MM-DDTh:mm:ss"
-                ).format("L")
-            );
+            c += `\nVenue:  ${response.data[obj].venue.name}
+        ${response.data[obj].venue.city}`;
 
-            console.log("_____________________________________________");
+            if (response.data[obj].venue.region !== "") {
+              c += `, ${response.data[obj].venue.region}`;
+            }
+            c += `, ${response.data[obj].venue.country}
+        ${moment(response.data[obj].datetime, "YYYY-MM-DDTh:mm:ss").format("L")}
+_____________________________________________\n`;
           }
+          console.log(c);
+          fs.appendFile(
+            "log.txt",
+            `${command}  "${artist.split("+").join(" ")}"\n${c}`,
+            function(err) {
+              if (err) {
+                return console.log(err);
+              }
+            }
+          );
         }
       }
     })
@@ -130,34 +141,41 @@ function Song_Info(song) {
       if (data.tracks.items.length === 0) {
         console.log("Song not found!");
       } else {
+        var c = "";
         for (let j = 0; j < data.tracks.items.length; j++) {
           if (
             (song === "The Sign" &&
               data.tracks.items[j].artists[0].name === "Ace of Base") ||
             song !== "The Sign"
           ) {
-            console.log(
-              "________________________________________________________________________________"
-            );
-            console.log("");
+            c +=
+              "________________________________________________________________________________\n\n";
+
             if (data.tracks.items[j].artists.length === 1) {
-              console.log("Artist:  " + data.tracks.items[j].artists[0].name);
+              c += `Artist:  ${data.tracks.items[j].artists[0].name}\n`;
             } else {
-              console.log("Artists:");
+              c += "Artists:\n";
               for (let i = 0; i < data.tracks.items[j].artists.length; i++) {
-                console.log("   - " + data.tracks.items[j].artists[i].name);
+                c += `   - ${data.tracks.items[j].artists[i].name}\n`;
               }
             }
 
-            console.log("Song:  " + data.tracks.items[j].name);
-            console.log(
-              "Spotify Link:  " + data.tracks.items[j].external_urls.spotify
-            );
-            console.log("Album Name:  " + data.tracks.items[j].album.name);
+            c += `Song:  ${data.tracks.items[j].name}
+Spotify Link:  ${data.tracks.items[j].external_urls.spotify}
+Album Name:  ${data.tracks.items[j].album.name}\n`;
           }
         }
-        console.log(
-          "________________________________________________________________________________"
+        c +=
+          "________________________________________________________________________________\n";
+        console.log(c);
+        fs.appendFile(
+          "log.txt",
+          `${command}  "${song.split("+").join(" ")}"\n${c}`,
+          function(err) {
+            if (err) {
+              return console.log(err);
+            }
+          }
         );
       }
     }
