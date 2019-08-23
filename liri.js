@@ -21,6 +21,7 @@ function Movie_Info(movie) {
     .then(function(response) {
       if (response.data["Response"] === "False") {
         console.log("Movie not found!");
+        Enter_Name("movie-this");
       } else {
         var c = `________________________________________________________________________________
       
@@ -72,6 +73,7 @@ ________________________________________________________________________________
         console.log("Error", error.message);
       }
       console.log(error.config);
+      Commands_Cons();
     });
 }
 
@@ -91,10 +93,12 @@ function Artist_Info(artist) {
       }
       var d = response.datetime;
       if (w === "{warn=Not found}") {
-        console.log("It was not found, please try a different name");
+        console.log("It was not found");
+        Enter_Name("concert-this");
       } else {
         if (response.data.length === 0) {
           console.log("No upcoming events.");
+          Commands_Cons();
         } else {
           var c = `_____________________________________________\n`;
 
@@ -130,6 +134,7 @@ _____________________________________________\n`;
       } else {
         console.log("Error", error.message);
       }
+      Commands_Cons();
     });
 }
 
@@ -138,9 +143,11 @@ function Song_Info(song) {
   spotify.search({ type: "track", query: song, limit: 5 }, function(err, data) {
     if (err) {
       return console.log("Error occurred");
+      Commands_Cons();
     } else {
       if (data.tracks.items.length === 0) {
         console.log("Song not found!");
+        Enter_Name("spotify-this-song");
       } else {
         var c = "";
         for (let j = 0; j < data.tracks.items.length; j++) {
@@ -202,39 +209,32 @@ function Name() {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 function Commands_Cons(command, name) {
-  if (process.argv[2] !== undefined) {
+  if (process.argv[2] !== undefined && command === undefined) {
     command = process.argv[2];
+  }
+  if (process.argv[3] !== undefined && name === undefined) {
+    name = Name();
   }
 
   switch (command) {
     case "concert-this":
-      if (process.argv[3] !== undefined) {
-        name = Name();
-      }
-      if (name !== undefined) {
-        Artist_Info(name);
-      } else {
+      if (name === undefined || name === "") {
         Enter_Name(command);
+      } else {
+        Artist_Info(name);
       }
 
       break;
     case "spotify-this-song":
-      if (name === undefined) {
+      if (name === undefined || name === "") {
         name = "The Sign";
       }
-      if (process.argv[3] !== undefined) {
-        name = Name();
-      }
-
       Song_Info(name);
 
       break;
     case "movie-this":
-      if (name === undefined) {
+      if (name === undefined || name === "") {
         name = "Mr. Nobody.";
-      }
-      if (process.argv[3] !== undefined) {
-        name = Name();
       }
 
       Movie_Info(name);
@@ -283,16 +283,19 @@ function Commands_Cons(command, name) {
               "movie-this",
               "concert-this",
               "spotify-this-song",
-              "do-what-it-says"
+              "do-what-it-says",
+              "finish"
             ],
             name: "com"
           }
         ])
         .then(function(inquirerResponse) {
-          if (inquirerResponse.com !== "do-what-it-says") {
-            Enter_Name(inquirerResponse.com);
-          } else {
-            Commands_Cons(inquirerResponse.com, "");
+          if (inquirerResponse.com !== "finish") {
+            if (inquirerResponse.com !== "do-what-it-says") {
+              Enter_Name(inquirerResponse.com);
+            } else {
+              Commands_Cons(inquirerResponse.com, "");
+            }
           }
         });
       break;
@@ -304,12 +307,14 @@ function Enter_Name(com) {
     .prompt([
       {
         type: "input",
-        message: "Enter The Name",
+        message: "Enter A Name, or 'fin' To Finish",
         name: "n"
       }
     ])
     .then(function(inquirerResponse2) {
-      Commands_Cons(com, inquirerResponse2.n);
+      if (inquirerResponse2.n !== "fin" && inquirerResponse2.n !== "'fin'") {
+        Commands_Cons(com, inquirerResponse2.n.split(" ").join("+"));
+      }
     });
 }
 
