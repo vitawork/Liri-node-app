@@ -5,6 +5,7 @@ var Spotify = require("node-spotify-api");
 var axios = require("axios");
 const moment = require("moment");
 const fs = require("fs");
+var inquirer = require("inquirer");
 
 var keys = require("./keys.js");
 var spotify = new Spotify(keys.spotify);
@@ -48,7 +49,7 @@ ________________________________________________________________________________
 
         fs.appendFile(
           "log.txt",
-          `${command}  "${movie.split("+").join(" ")}"\n${c}`,
+          `movie-this  "${movie.split("+").join(" ")}"\n${c}`,
           function(err) {
             if (err) {
               return console.log(err);
@@ -111,7 +112,7 @@ _____________________________________________\n`;
           console.log(c);
           fs.appendFile(
             "log.txt",
-            `${command}  "${artist.split("+").join(" ")}"\n${c}`,
+            `concert-this  "${artist.split("+").join(" ")}"\n${c}`,
             function(err) {
               if (err) {
                 return console.log(err);
@@ -170,7 +171,7 @@ Album Name:  ${data.tracks.items[j].album.name}\n`;
         console.log(c);
         fs.appendFile(
           "log.txt",
-          `${command}  "${song.split("+").join(" ")}"\n${c}`,
+          `spotify-this-song  "${song.split("+").join(" ")}"\n${c}`,
           function(err) {
             if (err) {
               return console.log(err);
@@ -200,77 +201,116 @@ function Name() {
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
+function Commands_Cons(command, name) {
+  if (process.argv[2] !== undefined) {
+    command = process.argv[2];
+  }
 
-var command = process.argv[2];
-switch (command) {
-  case "concert-this":
-    var artist = "";
-    if (process.argv[3] === undefined) {
-      console.log("Please enter a Band or an Artist");
-    } else {
-      artist = Name();
-      Artist_Info(artist);
-    }
-
-    break;
-  case "spotify-this-song":
-    var song = "";
-
-    if (process.argv[3] === undefined) {
-      song = "The Sign";
-    } else {
-      song = Name();
-    }
-
-    Song_Info(song);
-
-    break;
-  case "movie-this":
-    var movie = "";
-
-    if (process.argv[3] === undefined) {
-      movie = "Mr. Nobody.";
-    } else {
-      movie = Name();
-    }
-
-    Movie_Info(movie);
-
-    break;
-  case "do-what-it-says":
-    fs.readFile("random.txt", "utf8", function(error, data) {
-      if (error) {
-        return console.log(error);
+  switch (command) {
+    case "concert-this":
+      if (process.argv[3] !== undefined) {
+        name = Name();
+      }
+      if (name !== undefined) {
+        Artist_Info(name);
+      } else {
+        Enter_Name(command);
       }
 
-      var FArr = data.split("\n");
-      for (let i = 0; i < FArr.length; i++) {
-        var dataArr = FArr[i].split(",");
+      break;
+    case "spotify-this-song":
+      if (name === undefined) {
+        name = "The Sign";
+      }
+      if (process.argv[3] !== undefined) {
+        name = Name();
+      }
 
-        var com = dataArr[0];
-        var n = dataArr[1].split('"');
-        var name = n[1];
+      Song_Info(name);
 
-        switch (com) {
-          case "concert-this": {
-            Artist_Info(name);
-            break;
-          }
-          case "spotify-this-song": {
-            Song_Info(name);
-            break;
-          }
-          case "movie-this": {
-            Movie_Info(name);
-            break;
+      break;
+    case "movie-this":
+      if (name === undefined) {
+        name = "Mr. Nobody.";
+      }
+      if (process.argv[3] !== undefined) {
+        name = Name();
+      }
+
+      Movie_Info(name);
+
+      break;
+    case "do-what-it-says":
+      fs.readFile("random.txt", "utf8", function(error, data) {
+        if (error) {
+          return console.log(error);
+        }
+
+        var FArr = data.split("\n");
+        for (let i = 0; i < FArr.length; i++) {
+          var dataArr = FArr[i].split(",");
+
+          var com = dataArr[0];
+          var n = dataArr[1].split('"');
+          var name = n[1];
+
+          switch (com) {
+            case "concert-this": {
+              Artist_Info(name);
+              break;
+            }
+            case "spotify-this-song": {
+              Song_Info(name);
+              break;
+            }
+            case "movie-this": {
+              Movie_Info(name);
+              break;
+            }
           }
         }
-      }
-    });
+      });
 
-    break;
+      break;
 
-  default:
-    console.log("Enter a command to do");
-    break;
+    default:
+      inquirer
+        .prompt([
+          {
+            type: "list",
+            message: "Please Choose A Command",
+            choices: [
+              "movie-this",
+              "concert-this",
+              "spotify-this-song",
+              "do-what-it-says"
+            ],
+            name: "com"
+          }
+        ])
+        .then(function(inquirerResponse) {
+          if (inquirerResponse.com !== "do-what-it-says") {
+            Enter_Name(inquirerResponse.com);
+          } else {
+            Commands_Cons(inquirerResponse.com, "");
+          }
+        });
+      break;
+  }
 }
+
+function Enter_Name(com) {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        message: "Enter The Name",
+        name: "n"
+      }
+    ])
+    .then(function(inquirerResponse2) {
+      Commands_Cons(com, inquirerResponse2.n);
+    });
+}
+
+Commands_Cons();
