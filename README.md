@@ -14,17 +14,18 @@ In case of **movie-this**, **concert-this**, **spotify-this-song** you need to a
 
 ## Retreiving back
 
-   ###* movie-this
+   ### * movie-this
          Is giving a movie information:
-           * Title of the movie.
-           * Year the movie came out.
-           * IMDB Rating of the movie.
-           * Rotten Tomatoes Rating of the movie.
+
+           - Title of the movie.
+           - Year the movie came out.
+           - IMDB Rating of the movie.
+           - Rotten Tomatoes Rating of the movie.
            * Country where the movie was produced.
            * Language of the movie.
            * Plot of the movie.
            * Actors in the movie.
     
-   ###* concert-this
-   ###* spotify-this-song
-   ###* do-what-it-says
+   ### * concert-this
+   ### * spotify-this-song
+   ### * do-what-it-says
