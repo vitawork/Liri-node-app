@@ -25,7 +25,7 @@ In case of **movie-this**, **concert-this**, **spotify-this-song** you need to a
            - Language of the movie.
            - Plot of the movie.
            - Actors in the movie.
-        ![Image of menu](2.png)
+   ![Image of menu](2.png)
     
    ###  concert-this
          It is showig the events information for this artist(s)
@@ -33,7 +33,7 @@ In case of **movie-this**, **concert-this**, **spotify-this-song** you need to a
            - Name of the venue
            - Venue location
            - Date of the Event
-        ![Image of menu](3.png)
+   ![Image of menu](3.png)
          
    ###  spotify-this-song
          It is showing at most 5 songs information related to the song name you entered
@@ -42,7 +42,7 @@ In case of **movie-this**, **concert-this**, **spotify-this-song** you need to a
            - The song's name
            - A preview link of the song from Spotify
            - The album that the song is from
-        ![Image of menu](4.png)
+   ![Image of menu](4.png)
 
    ###  do-what-it-says
          LIRI will take the text inside of random.txt and then use it to call the LIRI's commands it says.  
