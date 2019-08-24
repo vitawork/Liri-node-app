@@ -1,6 +1,6 @@
 # LIRI (Language Interpretation Recognition Interface)
 
-A Node.JS command line application, it takes one of following commands and performs an action.
+A Node.JS command line application, that takes one of the following commands and performs an action.
    * movie-this
    * concert-this
    * spotify-this-song
@@ -15,7 +15,7 @@ In case of **movie-this**, **concert-this**, **spotify-this-song** you need to a
 ## Retreiving back
 
    ###  movie-this
-         It is showing a movie information:
+         It shows a movie information:
 
            - Title of the movie.
            - Year the movie came out.
@@ -28,7 +28,7 @@ In case of **movie-this**, **concert-this**, **spotify-this-song** you need to a
    ![Image of menu](2.png)
     
    ###  concert-this
-         It is showig the events information for this artist(s)
+         It shows the events information for this artist(s)
 
            - Name of the venue
            - Venue location
@@ -36,7 +36,7 @@ In case of **movie-this**, **concert-this**, **spotify-this-song** you need to a
    ![Image of menu](3.png)
          
    ###  spotify-this-song
-         It is showing at most 5 songs information related to the song name you entered
+         It shows at most 5 songs information related to the song name you entered
            
            - Artist(s)
            - The song's name
@@ -45,7 +45,7 @@ In case of **movie-this**, **concert-this**, **spotify-this-song** you need to a
    ![Image of menu](4.png)
 
    ###  do-what-it-says
-         LIRI will take the text inside of random.txt and then use it to call the LIRI's commands it says.  
+         LIRI will take the text inside of random.txt and then use it to call the LIRI's commands.  
 
 ## APIs
    * Bands in Town
