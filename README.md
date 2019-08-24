@@ -14,18 +14,32 @@ In case of **movie-this**, **concert-this**, **spotify-this-song** you need to a
 
 ## Retreiving back
 
-   ### * movie-this
-         Is giving a movie information:
+   ###  movie-this
+         Is showing a movie information:
 
            - Title of the movie.
            - Year the movie came out.
            - IMDB Rating of the movie.
            - Rotten Tomatoes Rating of the movie.
-           * Country where the movie was produced.
-           * Language of the movie.
-           * Plot of the movie.
-           * Actors in the movie.
+           - Country where the movie was produced.
+           - Language of the movie.
+           - Plot of the movie.
+           - Actors in the movie.
     
-   ### * concert-this
-   ### * spotify-this-song
-   ### * do-what-it-says
+   ###  concert-this
+         Is showig the venues information for this artist(s)
+
+           - Name of the venue
+           - Venue location
+           - Date of the Event
+         
+   ###  spotify-this-song
+         Is showing at most 5 songs information related to the song name you entered
+           
+           - Artist(s)
+           - The song's name
+           - A preview link of the song from Spotify
+           - The album that the song is from
+
+   ###  do-what-it-says
+         LIRI will take the text inside of random.txt and then use it to call the LIRI's commands it says.  
