@@ -98,7 +98,6 @@ function Artist_Info(artist) {
       } else {
         if (response.data.length === 0) {
           console.log("No upcoming events.");
-          Commands_Cons();
         } else {
           var c = `_____________________________________________\n`;
 
